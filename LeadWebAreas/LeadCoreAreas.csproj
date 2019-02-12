@@ -16,9 +16,12 @@
 
   <ItemGroup>
     <Compile Include="Areas\Product\Controllers\productsController.cs" />
+    <Compile Include="Areas\Product\Models\DatabaseContext.cs" />
     <Compile Include="Areas\Product\Models\product.cs" />
     <Compile Include="Areas\Store\Controllers\StoresController.cs" />
+    <Compile Include="Areas\Store\Models\DatabaseContext.cs" />
     <Compile Include="Areas\Store\Models\store.cs" />
+    <Compile Include="Areas\Utils\Common.cs" />
   </ItemGroup>
 
   <ItemGroup>
