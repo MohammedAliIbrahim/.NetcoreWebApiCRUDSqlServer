@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using LeadCoreAreas.Models;
 using LeadCoreAreas.Areas.Store;
-
+using LeadCoreAreas.Areas.Models;
 
 namespace LeadCoreAreas.Areas.Store.Controllers
 {
@@ -23,85 +23,268 @@ namespace LeadCoreAreas.Areas.Store.Controllers
         }
 
         // GET: api/Stores
+        //    [HttpGet]
+        //    public async Task<ActionResult<IEnumerable<store>>> GetStores()
+        //    {
+        //        return await _context.Stores.ToListAsync();
+        //    }
+
+        //    // GET: api/Stores/5
+        //    [HttpGet("{id}")]
+        //    public async Task<ActionResult<store>> GetStore(int id)
+        //    {
+        //        var store = await _context.Stores.FindAsync(id);
+
+        //        if (store == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        return store;
+        //    }
+
+        //    // PUT: api/Stores/5
+        //    [HttpPut("{id}")]
+        //    public async Task<IActionResult> PutStore(int id, store store)
+        //    {
+        //        if (id != store.StoreId)
+        //        {
+        //            return BadRequest();
+        //        }
+
+        //        _context.Entry(store).State = EntityState.Modified;
+
+        //        try
+        //        {
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!StoreExists(id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+
+        //        return NoContent();
+        //    }
+
+        //    // POST: api/Stores
+        //    [HttpPost]
+        //    public async Task<ActionResult<store>> PostStore(store store)
+        //    {
+        //        _context.Stores.Add(store);
+        //        await _context.SaveChangesAsync();
+
+        //        return CreatedAtAction("GetStore", new { id = store.StoreId }, store);
+        //    }
+
+        //    // DELETE: api/Stores/5
+        //    [HttpDelete("{id}")]
+        //    public async Task<ActionResult<store>> DeleteStore(int id)
+        //    {
+        //        var store = await _context.Stores.FindAsync(id);
+        //        if (store == null)
+        //        {
+        //            return NotFound();
+        //        }
+
+        //        _context.Stores.Remove(store);
+        //        await _context.SaveChangesAsync();
+
+        //        return store;
+        //    }
+
+        //    private bool StoreExists(int StoreId)
+        //    {
+        //        return _context.Stores.Any(e => e.StoreId == StoreId);
+        //    }
+        //}
+
+
+        // GET: api/stores
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<store>>> GetStores()
+        public async Task<CommonResponse> GetStores(PagingFilter pagingfilter)
         {
-            return await _context.Stores.ToListAsync();
-        }
 
-        // GET: api/Stores/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<store>> GetStore(int id)
-        {
-            var store = await _context.Stores.FindAsync(id);
-
-            if (store == null)
+            if (pagingfilter.Page != null)
             {
-                return NotFound();
+
+                //var takePage = page ?? 1;
+                //var takeCount = count ?? DefaultPageRecordCount;
+
+                //var calls = context.Stores
+                //                .Skip((takePage - 1) * takeCount)
+                //                .Take(takeCount)
+                //                .ToList();
+
+                var page = pagingfilter.Page;
+                var count = pagingfilter.PageSize;
+                var takePage = page ?? 1;
+                var takeCount = count ?? 10;
+
+
+                var PagedStores = await _context.Stores
+                                .Skip((takePage - 1) * takeCount)
+                                .Take(takeCount)
+                                .ToListAsync(); ;
+
+
+                //  var PagedStores = await _context.Stores.ToListAsync();
+                return new CommonResponse(1, "Store.Stores.AddSuccess", PagedStores);
             }
-
-            return store;
-        }
-
-        // PUT: api/Stores/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStore(int id, store store)
-        {
-            if (id != store.Id)
+            if (pagingfilter.ID != null)
             {
-                return BadRequest();
-            }
+                var store = await _context.Stores.FindAsync(pagingfilter.ID);
 
-            _context.Entry(store).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StoreExists(id))
+                if (store == null)
                 {
-                    return NotFound();
+                    return new CommonResponse(-1, "Store.Stores.GetFail", store);
+                    //  return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                return new CommonResponse(1, "Store.Stores.GetSuccess", store);
+
+
             }
 
-            return NoContent();
+            if (pagingfilter.Query != null)
+            {
+                var storesSearch = _context.Stores.Where(x => x.StoreName.Contains(pagingfilter.Query));
+
+
+
+                return new CommonResponse(1, "Store.Stores.GetSuccess", storesSearch);
+
+
+
+            }
+            var stores = await _context.Stores.ToListAsync();
+            return new CommonResponse(1, "Store.Stores.GetSuccess", stores);
+            //  return new CommonResponse(-1, "Contat.Stores.AddFail", stores);
         }
 
-        // POST: api/Stores
+        // GET: api/stores/5
+
+
+        //[HttpGet("{id}")]
+        //public async Task<Common> Getstore(int id)
+        //{
+        //    var store = await _context.Stores.FindAsync(id);
+
+        //    if (store == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return store;
+        //}
+
+        // PUT: api/stores/5
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> Putstore(int id, store store)
+        //{
+        //    if (id != store.Id)
+        //    {
+        //        return BadRequest();
+        //    }
+
+        //    _context.Entry(store).State = EntityState.Modified;
+
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!storeExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
+
+        //    return NoContent();
+        //}
+
+        // POST: api/stores
         [HttpPost]
-        public async Task<ActionResult<store>> PostStore(store store)
+        public async Task<ActionResult<CommonResponse>> Poststore(int? StoreId, store store)
         {
-            _context.Stores.Add(store);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetStore", new { id = store.Id }, store);
+
+
+            if (StoreId.HasValue)
+            {
+
+                if (StoreId != store.StoreId)
+                {
+                    return new CommonResponse(-1, "Store.Stores.EditFail");
+                    //  return BadRequest();
+                }
+
+                _context.Entry(store).State = EntityState.Modified;
+
+
+                try
+                {
+                    await _context.SaveChangesAsync();
+                    return new CommonResponse(1, "Store.Stores.EditSuccess");
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!storeExists(StoreId))
+                    {
+                        return new CommonResponse(-1, "Store.Stores.EditFail");
+                        //return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+
+                //return NoContent();
+                //return new CommonResponse(-1, "Store.Stores.EditFail");
+            }
+            else
+            {
+
+                _context.Stores.Add(store);
+                await _context.SaveChangesAsync();
+                return new CommonResponse(1, "Store.Stores.AddSuccess");
+            }
+            // return CreatedAtAction("Getstore", new { id = store.Id }, store);
         }
 
-        // DELETE: api/Stores/5
+        // DELETE: api/stores/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<store>> DeleteStore(int id)
+        public async Task<ActionResult<CommonResponse>> Deletestore(int StoreId)
         {
-            var store = await _context.Stores.FindAsync(id);
+            var store = await _context.Stores.FindAsync(StoreId);
             if (store == null)
             {
-                return NotFound();
+                return new CommonResponse(-1, "Store.Stores.DeletetFail");
+                // return NotFound();
             }
 
             _context.Stores.Remove(store);
             await _context.SaveChangesAsync();
-
-            return store;
+            return new CommonResponse(-1, "Store.Stores.DeleteSuccess");
+            // return store;
         }
 
-        private bool StoreExists(int id)
+        private bool storeExists(int? StoreId)
         {
-            return _context.Stores.Any(e => e.Id == id);
+            return _context.Stores.Any(e => e.StoreId == StoreId );
         }
     }
+
 }

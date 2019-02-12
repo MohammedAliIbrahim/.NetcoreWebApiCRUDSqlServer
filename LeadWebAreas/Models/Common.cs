@@ -5,7 +5,7 @@ using System.Web;
 using System.Linq.Expressions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-namespace LeadCoreWeb.Areas.LeadCore.Models
+namespace LeadCoreAreas.Areas.Models
 {
     public class CommonResponse
     {
@@ -29,9 +29,10 @@ namespace LeadCoreWeb.Areas.LeadCore.Models
     public class PagingFilter
     {
         public string Query { get; set; }
-        public int? Page { get; set; } = 1;
-        public int? PageSize { get; set; } = 10;
-        public string OrderByDirection { get; set; } = "DESC";
+        public int? ID { get; set; }
+        public int? Page { get; set; }
+        public int? PageSize { get; set; }
+        public string OrderByDirection { get; set; } 
         public string OrderBy { get; set; }
     }
 

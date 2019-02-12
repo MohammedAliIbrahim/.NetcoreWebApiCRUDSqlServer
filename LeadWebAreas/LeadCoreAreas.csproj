@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Contacts\Controllers\" />
     <Folder Include="Areas\Product\Data\" />
     <Folder Include="Areas\Product\Views\" />
     <Folder Include="Areas\Store\Data\" />

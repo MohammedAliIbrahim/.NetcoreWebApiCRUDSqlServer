@@ -10,9 +10,9 @@ namespace LeadCoreAreas.Models
 
 
 
-        public int Id { get; set; }
+        public int StoreId { get; set; }
      
-        public string name { get; set; }
+        public string StoreName { get; set; }
         public ICollection<product> Products { get; set; }
 
     }
