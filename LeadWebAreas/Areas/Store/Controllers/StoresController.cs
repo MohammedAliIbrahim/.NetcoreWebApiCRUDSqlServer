@@ -107,7 +107,7 @@ namespace LeadCoreAreas.Areas.Store.Controllers
 
 
         // GET: api/stores
-        [HttpGet]
+        [HttpPost("GetGetStores")]
         public async Task<CommonResponse> GetStores(PagingFilter pagingfilter)
         {
 
@@ -215,7 +215,7 @@ namespace LeadCoreAreas.Areas.Store.Controllers
         //}
 
         // POST: api/stores
-        [HttpPost]
+        [HttpPost("AddOrEditStore")]
         public async Task<ActionResult<CommonResponse>> Poststore(int? StoreId, store store)
         {
 
@@ -265,7 +265,8 @@ namespace LeadCoreAreas.Areas.Store.Controllers
         }
 
         // DELETE: api/stores/5
-        [HttpDelete("{id}")]
+        //[HttpDelete("{id}")]
+        [HttpDelete("DeleteStore/{StoreId}")]
         public async Task<ActionResult<CommonResponse>> Deletestore(int StoreId)
         {
             var store = await _context.Stores.FindAsync(StoreId);

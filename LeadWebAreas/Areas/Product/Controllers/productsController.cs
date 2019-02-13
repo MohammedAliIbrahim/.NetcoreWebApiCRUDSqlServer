@@ -9,7 +9,8 @@ using LeadCoreAreas.Models;
 using LeadCoreAreas.Areas.Models;
 namespace LeadCoreAreas.Areas.Product.Controllers
 {
-    [Route("api/[controller]")]
+     [Route("api/[controller]")]
+    
     [ApiController]
     public class productsController : ControllerBase
     {
@@ -21,7 +22,7 @@ namespace LeadCoreAreas.Areas.Product.Controllers
         }
 
         // GET: api/products
-        [HttpGet]
+        [HttpPost("GetProducts")]
         public async Task<CommonResponse> GetProducts(PagingFilter pagingfilter)
         {
 
@@ -119,7 +120,7 @@ namespace LeadCoreAreas.Areas.Product.Controllers
         //}
 
         // POST: api/products
-        [HttpPost]
+        [HttpPost("AddOrEditProduct")]
         public async Task<ActionResult<CommonResponse>> Postproduct(int? ProductId, product product)
         {
 
@@ -169,7 +170,8 @@ namespace LeadCoreAreas.Areas.Product.Controllers
         }
 
         // DELETE: api/products/5
-        [HttpDelete("{id}")]
+       [HttpDelete("DeleteProduct/{ProductId}")]
+        
         public async Task<ActionResult<CommonResponse>> Deleteproduct(int ProductId)
         {
             var product = await _context.Products.FindAsync(ProductId);

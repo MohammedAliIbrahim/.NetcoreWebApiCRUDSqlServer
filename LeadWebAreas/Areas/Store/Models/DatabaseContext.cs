@@ -13,7 +13,10 @@ namespace LeadCoreAreas.Areas.Store
 
 
 
-        /*   public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+        /* 
+         *
+         *
+         * public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
        { }*/
 
         /*   private readonly IConfiguration configuration;
